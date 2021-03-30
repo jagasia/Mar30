@@ -1,0 +1,697 @@
+SOAP and RESTful Web services with Post man:
+----------------------------------------------
+History of web services
+	different languages were used to develop the applications
+	these applications run in different platform
+	
+	one thing was missing. 
+		Interoperability
+
+	The ability of the applications to work along with other applications
+	suppose, we have created a method that will convert rupee into dollar
+
+	another enterprise need this code.
+	how they can access our code?
+		if you give them the code, then the code is not up to date.
+	to be able to be up to date, the code should be accessed directly every time (not copying the code to client)
+
+	if we just want to display, then we can use servlets or jsp or asp or php.
+	but we want the result to be used in our code
+
+	we need service.
+		not the product
+
+	what is difference between producgt and service?
+		xiomi redmi
+		airtel
+
+	which of the above is product and which is service?
+	
+	What is the technique to provide a code as a service?
+		web service
+
+	how is it possible? if the code is developed in Java. How can we access it from visual basic program?
+
+	The problem with different language programs are
+		data types
+		binary
+
+	these problems could be addressed by a text based data definintion called XML
+
+	XML was the main reason for the invention of web services
+
+	W3c approved some standards for web service
+		1) SOAP		(Simple Object Access Protocol)
+		2) UDDI		(Universal Description, Discovery and Integration)
+		3) XML
+		4) HTTP
+		5) WSDL		(Web Services Description Language)
+
+	these standards helped us to create web services in any language and accessed from programs developed in any language running in any platform
+
+	all because of XML
+	
+SOAP
+	defines how the request, response messages should be composed
+	how the data sent and received between the method and the calling method
+
+	webservice allows calling a method through internet
+
+1) learn to create webservice
+2) learn to access an existing webservice
+
+But there are 2 differnt types of web service
+	SOAP
+	REST
+
+
+in soap web service, an interface and an implementing class are created
+	and then the impl class is exposed to the rest of the world using WS
+
+Lets take an example
+	adding 2 numbers
+	subtracting 2 numbers
+	product
+
+2 approaches in creating a webservice
+	1) if the code is already available, only we just need to extract a WSDL URL
+	2) IF THERE is a WSDL file, i can generate ws from that and provide the implemention
+
+
+How to create a SOAP web service?
+
+
+
+
+http://localhost:12169/mar-30-soap-ws-1/services/MathsImpl?WSDL
+
+
+once we have obtained the WSDL url,
+open another instance of eclipse/sts/intelliJ
+
+keep ws running in another sts
+
+Create a core "java project"
+and access the web service client.
+
+How?
+	right click the project, 
+		new -> web service client
+	paste the wsdl url
+
+	you will get the proxy for ws in your project
+
+	create an object of proxy and call the methods
+
+------------------------------------------------------------
+Task:
+	Create a web service that has 2 or 3 methods
+	generate wsdl based on impl class using Bottom up approach
+
+	append ?WSDL to the end point address
+
+	Create a client project using another instance of eclipse
+
+	use WSDL url to download proxy and using proxy, call the methods
+
+
+
+
+1) server project in an eclipse work space
+2) client project in another eclipse work space
+
+Difference between SOAP and REST
+-------------------------------------
+1) SOAP is a protocol. REST is an architectural pattern.
+2) SOAP follows strict standard to allow communication between the client and the server. REST doesnot.
+3) SOAP supports only XML format. REST supports, plain text, XML, HTML, JSON
+4) soap uses service interface to expose its functionality. REST uses uniform service locators to access the components
+5) SOAP cannot make use of REST whereas REST can make use of SOAP.
+
+-----------------------------------------------------------------------------------
+REpresentational State Transfer
+	architectural pattern for web services
+
+RESTful web services 
+	can be created in any language.
+	For java, there are some frameworks to help us create RESTful web services
+		i) Spring
+		i) Jersey
+
+we learn to use jersey framework
+	there is a disptacher servlet
+	that receives the requests and find the appropriate method to call
+
+	the URL is used to call a required java method
+
+	/ for all requests
+	/rest	for all requests coming like
+		/rest/login
+		/rest/signup
+		/rest/employees
+
+
+localhost:8080/
+
+if the url is given in class level
+
+
+
+localhost:8080/branch
+
+	for method it is /
+
+finally
+
+localhost:8080/branch/
+
+
+but we can remove that url in class
+
+for every method
+	/branch
+
+	/branch/{bid}
+
+	
+localhost:8080/branch				(all branches)
+
+		SAME URI but DIFFERENT HTTP methods
+
+GET
+POST
+PUT
+DELETE
+PATCH
+	all use the same URL but different methods
+
+in spring controller (@Controller), we are able to use HttpSession. when JSP client access our controller methods,
+session management is there
+
+but from rest client (@RestController), (angular) the rest controllers are not state ful.
+
+	Statelessness:
+		no client state information is maintained at server
+		hence, scalable and reduced work load
+
+
+	Layered System:
+		example, API in one server, Database in another server, authentication in another server	
+
+	Code on Demand:
+		different format based on demand. XML or JSON
+
+
+1) create dynamic web project
+2) convert into maven project
+3) in pom.xml, add the dependencies
+			            <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>2.29.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>2.29.1</version>
+        </dependency>
+    
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>2.29.1</version>
+        </dependency>
+
+	<dependency>
+	    <groupId>asm</groupId>
+	    <artifactId>asm</artifactId>
+	    <version>3.1</version>
+	</dependency>
+
+
+4) configure the dispatcher servlet in "web.xml"
+
+	    <servlet>
+        <servlet-name>Jersey REST Service</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>com.cts.jag</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Jersey REST Service</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+
+5) import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
+
+@Path("/")
+public class HelloWorld {
+	@GET
+	@Produces("text/xml")
+	public Response getMessage()
+	{
+		return Response.status(200).entity("<b>Hello Jag</b>").build();
+	}
+	
+}
+
+----------------------
+Create a rest client program in core java and access the restful webservice. (Check url)
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+public class NetClientGet {
+    public static void main(String[] args) {
+        try {
+
+            URL url = new URL("http://localhost:8080/mar-30-rest-1/rest/");//your url i.e fetch data from .
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "text/xml");
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP Error code : "
+                        + conn.getResponseCode());
+            }
+            InputStreamReader in = new InputStreamReader(conn.getInputStream());
+            BufferedReader br = new BufferedReader(in);
+            String output;
+            while ((output = br.readLine()) != null) {
+                System.out.println(output);
+            }
+            conn.disconnect();
+
+        } catch (Exception e) {
+            System.out.println("Exception in NetClientGet:- " + e);
+        }
+    }
+}
+------------------------
+creating one web service that produces url for 
+	create
+	read
+	read
+	update
+	delete
+
+
+-----------------------------------
+1) QueryParam
+---------------
+	@GET
+	@Path("/sum")
+	public int sum(@QueryParam("i") int i,@QueryParam("j") int j)
+	{
+		return i+j;
+	}
+
+http://localhost:8080/mar-30-rest-1/rest/sum?i=20&j=30
+
+2) FormParam
+<form action="http://localhost:8080/mar-30-rest-1/rest/login" method="POST">
+	User Name: <input type=text name=username /><br/>
+	Password: <input type=password name=password /><br/>
+	<input type=submit />
+</form>
+
+	@POST
+	@Path("/login")
+	public String login(@FormParam("username")String username,@FormParam("password") String password)
+	{
+		return username+":"+password;
+	}
+
+
+
+1) read
+	the method returns list of entities
+	produces JSON
+
+2) read by id		/{bid}
+	@PathParam	
+
+3) create
+	the method can accept lot of inputs from text boxes of form using @FormParam
+
+4) update
+	the method can accept lot of inputs from text boxes of form using @FormParam
+5) delete
+	/{bid}
+	@PathParam
+
+
+1) read:
+
+@GET
+	@Path("/branch")
+	@Produces("text/json")
+	public List<Branch> read()
+	{
+		ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+		BranchDao bdao=(BranchDao) ctx.getBean("bdao");
+		List<Branch> branches = bdao.read();
+		return branches;
+	}
+
+
+2) read by id:
+
+	@GET
+	@Path("/branch/{bid}")
+	@Produces("text/json")
+	public Branch read(@PathParam("bid") String bid)
+	{
+		ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+		BranchDao bdao=(BranchDao) ctx.getBean("bdao");
+		Branch branch = bdao.read(bid);
+		return branch;
+	}
+
+3) create:
+	@POST
+	@Path("/branch")
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public String create(Branch branch)
+	{
+		ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+		BranchDao bdao=(BranchDao) ctx.getBean("bdao");
+		bdao.create(branch);
+		return "success:"+branch.toString();
+	}
+	
+4) update:
+	@PUT
+	@Path("/branch")
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public String update(Branch branch)
+	{
+		ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+		BranchDao bdao=(BranchDao) ctx.getBean("bdao");
+		bdao.update(branch);
+		return "success:"+branch.toString();
+	}
+
+
+5) delete:	
+	@DELETE
+	@Path("/branch/{bid}")
+	public String delete(@PathParam("bid") String bid)
+	{
+		ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+		BranchDao bdao=(BranchDao) ctx.getBean("bdao");
+		bdao.delete(bid);
+		return "success:"+bid;
+	}
+	
+
+
+-------------------------------------------
+create the jersey restful web service that provides methods for 
+	CREATE
+	READ
+	READ BY ID
+	UPDATE
+	DELETE
+
+test the methods using Post man
+
+-----------------------------------------------------
+1) install node js
+2) check version
+	node -v
+
+	this confirms that node js is installed in your computer
+3) 	npm -v
+	this confirms that node package manager is installed in your computer
+
+4) now, we can start installing
+	i) typescript				npm install -g typescript
+	ii) angular				npm install @angular/cli -g
+
+5) check angular version
+	ng -v version
+
+6) check typescript version
+	tsc -v	(or) tsc --version
+
+
+all of us have visual studio code
+
+------------------------------------------
+1) create a file 
+	one.ts
+2) compile the file
+	tsc one.ts
+3) run the js file
+	node one.js
+-------------------------------------------------------------------
+Typescript
+-----------
+
+When there is a language called javascript, why we need another language?
+Why not we have a new version in javascript rather than a new language?
+
+Javascript ES6 is the latest version of javascript
+	what is ES?	ECMA Script is shortly called as ES
+	ECMA - European Computer Manufacturers' Association
+
+Whenever a new version of javascript language is introduced, the current browsers 
+	could not understand the new features added in js
+	So, we were forced to download new version of browser also
+
+How this problem came to an end?
+	constant improvement in the programming language leads to new versions
+	
+But, only new version of TypeScript comes. (how this does not affect browser version?)
+	the typescript code is compiled to javascript code. Hence browsers understand
+
+even if new ts version comes, the compiler translates them into JS ES6 version only
+
+the browsers do not bother about typescript. THe browsers do not understand typescript
+
+our angular projects use typescript. but they are not directly sent to browser. 
+	They are translated into js code and sent to the browser
+
+advantages of typescript
+	1) javascript is not compiled. so if there are errors, we have to run the code to find the bugs
+		but typescript codes are compiled. Hence compiler will reveal the errors. No need to run to test
+	2) typescript is strongly typed.	variables can restrict the type of data using data types
+		typescript can declare variable in more than one type also
+		let x : any;	
+		let y : string|number;
+	3) OOP		Classes, Interfaces, Inheritance	
+		class Student
+		{}
+
+components of typescript:
+1) Language
+2) Compiler
+3) Language service:
+	auto completion
+	signature help
+	code formatting
+
+in type script, (similar to js), 
+	semicolon is optional	if a new line character is found
+
+	var i
+	var j
+
+is fine
+
+	var i			var j
+is not fine
+
+typescript ignores space, tab, white space in a program
+	var			i;
+	var i;
+typescript is case sensitive. it differentiates lower case with upper case.
+comments
+	single line comments	//
+	multi line comments	/*	*/
+
+variables / identifiers (name of anything)
+1) cannot start with a digit
+2) can contain characters, numbers.
+3) symbols are not allowed
+	except		_ 	and 	$
+4) identifiers cannot be keyword
+5) must be unique	(within the scope)
+6) case sensitive
+7) cannot have space in between
+
+Data types:
+number
+	let x : number=20;
+
+string
+	let x:string="hello world";
+
+Date
+	let x:Date=new Date();
+
+boolean
+enum		(fixed set of values)
+	enum Days {Monday, Tuesday, Wednesday};
+
+void
+null		(no value assigned)
+undefined	(no type is assigned)
+any
+	
+never
+		function fn1():never		
+		{
+			//somewhere we raise exception 		for sure
+		}
+
+array
+
+let arr:number[]=[1,2,3,4,5];
+arr.push(6);
+arr.pop();
+
+
+tuple
+		let person:[string,number]=["Ram",100];
+
+		many variable of diff types inside tuple
+
+TasK:
+------
+	write a typescript program to declare variables of
+	
+number
+string
+boolean
+enum
+any			(also declare variable of
+		2 types.
+		ex:	var x:string|boolean
+
+		x="true";		//string
+		x=true;			//boolean
+
+display the variables in console.
+-------------------------
+variable declarations:
+int x;	// c, c++, c#, java, j#
+but in typescript
+let x:number;
+
+1) declare its type and value in one statement
+	var x1 : string = "india";
+2) declare its type but no value
+	var x1 : string;
+3) declare its value but no type
+	var x1 : "india";
+4) declare variable but no type or no value
+	var x1;
+
+-----------------------------
+Type Assertion in typescript: (change variable from one type to another)
+
+like type casting or conversion
+in c language:
+	int x=(int) f;		//f is a float
+in typescript:
+	var str="1";	//based on value, str is string
+	var xy:number=str;	//error
+solution:
+	var xy:number=<number>str;	//cannot cast string into number (so error)
+	var xy:number=<number>	<any>str; //correct
+
+console.log(typeof xy);
+console.log(typeof(xy));
+
+
+Variable scope:
+	Global scope
+	Class scope
+	Local scope
+
+a variable declared outside any function/ class (global)
+
+var global=12;			//global variable
+class Numbers{
+	num_val=13;		//class variable
+	static sval=10;		//static field
+	fn1():void
+	{
+		var local_var=14;	//local variable
+	}
+}
+
+class Student
+{
+    sid:number=100;
+    static collegeName:string='LPU';
+}
+
+var rama:Student=new Student();
+console.log(rama.sid);
+console.log(Student.collegeName);
+
+Activity:
+what are all other operators we have?
+
+var msg="hello" + "world";
+console.log(msg);		//output is :		helloworld
+---------------------
+var num=12;
+console.log(typeof num);	//output is : 		number
+--------------------
+let arr=[1,2,3];
+console.log(arr instanceof Array);		//true
+--------------------
+var x=4;
+var y=-x;
+
+console.log(x);		//	4
+console.log(y);		//	-4
+------------------
+var num=-2;
+console.log(num>0?"yes":"no");		//		no
+--------------------
+let a = 10;
+let b = 20;
+console.log(a===b);    //false				=== means is same in type, value, ref
+console.log(a===10);   //true
+console.log(a!=b);  
+console.log(a!==b); 
+
+
+categories:
+Arithmetic operators:
+	+	-	*	/
+	%	++	--
+
+	z=x%y;		after diving x by y, the reminder is stored in z
+	++		increment by 1
+	--		decrement by 1
+
+Logical operators:
+	!	&&	||
+Relational operators:
+	>	<	>=	<=	==	!=	
+Bitwise operators:
+	&	|	~	^	<<	>>		>>>
+Assignment operators:
+	=	+=	-=	*=	/=	%=
+Ternary/conditional operator:
+	?:
+String operator:
+	+		(this is concatenation)
+Type Operators:
+	typeof				returns the type of the variable
+	instanceof			return true/false whether x instanceof y
+
+
