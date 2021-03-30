@@ -1,3 +1,5 @@
+1) download node js (from git link i sent)
+2) double click that file to install
 3) check versions of nodejs and npm
 $ node -v
 $ npm -v
